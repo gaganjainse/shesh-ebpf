@@ -59,6 +59,36 @@ def get_process_io(pid: int = 1) -> dict:
     return {"ok": True, "pid": pid, "io": data, "source": "procfs"}
 
 @mcp.tool()
+def list_processes(limit: int = 50) -> dict:
+    """List live processes from /proc (pid, name, state) — real procfs data.
+
+    Aya eBPF would stream execve events; this is the honest read snapshot:
+    every row existed at call time, nothing synthesized. Skips processes
+    that vanish mid-scan (their /proc entries are inherently racy).
+    """
+    limit = max(1, min(int(limit), 1000))
+    procs = []
+    for entry in sorted(pathlib.Path("/proc").iterdir()):
+        if len(procs) >= limit:
+            break
+        if not entry.name.isdigit():
+            continue
+        stat = _read_proc(str(entry / "stat"))
+        if not stat:
+            continue  # process exited between iterdir and read — expected race
+        # comm may contain spaces/parens; state follows the final ')'
+        rparen = stat.rfind(")")
+        if rparen == -1:
+            continue  # malformed stat — skip rather than guess
+        comm = stat[stat.find("(") + 1:rparen]
+        fields = stat[rparen + 1:].split()
+        if not fields:
+            continue
+        procs.append({"pid": int(entry.name), "name": comm, "state": fields[0]})
+    return {"ok": True, "count": len(procs), "processes": procs, "source": "procfs"}
+
+
+@mcp.tool()
 def list_ebpf_programs() -> dict:
     return {
         "programs": [
