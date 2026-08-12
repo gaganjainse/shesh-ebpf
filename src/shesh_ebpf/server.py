@@ -6,10 +6,10 @@ import pathlib
 import time
 
 try:
-    from shesh_audit.guard import GuardedMCP as FastMCP
+    from shesh_audit.mcp_guard import GuardedMCP as FastMCP
 except ImportError:
     try:
-        from mcp.server.fastmcp import FastMCP
+        from fastmcp import FastMCP
     except ImportError:
         # Dummy fallback for testing without mcp installed
         class FastMCP:
