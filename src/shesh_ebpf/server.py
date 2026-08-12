@@ -5,21 +5,7 @@ from __future__ import annotations
 import pathlib
 import time
 
-try:
-    from shesh_audit.mcp_guard import GuardedMCP as FastMCP
-except ImportError:
-    try:
-        from fastmcp import FastMCP
-    except ImportError:
-        # Dummy fallback for testing without mcp installed
-        class FastMCP:
-            def __init__(self, name): self.name = name
-            def tool(self):
-                def decorator(fn):
-                    return fn
-                return decorator
-            def run(self, transport="stdio"):
-                print(f"{self.name} stub run")
+from shesh_audit.mcp_guard import GuardedMCP as FastMCP
 
 mcp = FastMCP("shesh-ebpf")
 
