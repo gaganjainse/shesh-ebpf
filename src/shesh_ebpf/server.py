@@ -26,7 +26,7 @@ mcp = FastMCP("shesh-ebpf")
 def _read_proc(path: str) -> str:
     try:
         return pathlib.Path(path).read_text()
-    except Exception:
+    except (OSError, UnicodeError):
         return ""
 
 @mcp.tool()

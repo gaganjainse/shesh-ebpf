@@ -1,4 +1,10 @@
-from shesh_ebpf.server import get_system_metrics, get_network_stats, get_process_io, list_ebpf_programs
+from shesh_ebpf.server import (
+    get_network_stats,
+    get_process_io,
+    get_system_metrics,
+    list_ebpf_programs,
+)
+
 
 def test_system_metrics():
     res = get_system_metrics()
