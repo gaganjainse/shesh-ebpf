@@ -1,6 +1,6 @@
-> ⚠️ **Consolidated into [shesh-core](https://github.com/gaganjainse/shesh-core)** — this module now lives in the shesh-core monorepo (same package name, same console script). Archived 2026-08-13.
+>  **Consolidated into [shesh-core](https://github.com/gaganjainse/shesh-core)** — this module now lives in the shesh-core monorepo (same package name, same console script). Archived 2026-08-13.
 
-# 🔍 shesh-ebpf
+# shesh-ebpf
 
 eBPF telemetry with Aya (Rust) for system/performance sensing — read-only.
 
@@ -10,6 +10,7 @@ eBPF telemetry with Aya (Rust) for system/performance sensing — read-only.
 - Upstream: Aya Rust eBPF library (https://github.com/aya-rs/aya) — read-only, no kprobes that modify
 
 ## Tools
+
 - `get_system_metrics` — CPU, memory, load, disk, network via /proc (Aya placeholder)
 - `get_network_stats` — TCP retransmits, packet loss via /proc/net
 - `get_process_io` — per-process I/O via /proc/[pid]/io
@@ -19,15 +20,18 @@ Future Rust: Aya programs for execve, openat, TCP events — read-only, behind p
 All behind Guard — protected paths denied, read-only.
 
 ## Dev
+
 ```bash
 uv sync && uv run pytest
 ```
 
 ## Rust (future)
+
 ```bash
 cd ebpf-rs
 cargo build --release
 # Aya program: ebpf/src/main.rs — trace execve with BPF_MAP_TYPE_PERF_EVENT_ARRAY
+
 ```
 
 ## Security
